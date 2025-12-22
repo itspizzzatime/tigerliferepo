@@ -47,10 +47,22 @@ export async function saveApplication(applicationData: any) {
   }
 }
 
-export async function deleteUserData() {
+export async function deleteUserData(userEmail: string) {
     try {
-        // Instead of deleting the file, we clear the profiles to avoid breaking static imports.
-        await writeDb({ profiles: {} });
+        const db = await readDb();
+        if (!db.profiles) {
+            return { success: true };
+        }
+
+        const profileIdToDelete = Object.keys(db.profiles).find(
+            id => db.profiles[id].email === userEmail
+        );
+
+        if (profileIdToDelete) {
+            delete db.profiles[profileIdToDelete];
+            await writeDb(db);
+        }
+        
         return { success: true };
     } catch (error) {
         console.error("Failed to delete user data:", error);

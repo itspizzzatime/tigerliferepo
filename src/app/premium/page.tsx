@@ -109,7 +109,11 @@ export default function PremiumPage() {
   };
 
   const handleConfirmCancel = async () => {
-    const result = await deleteUserData();
+    if (!user?.email) {
+      alert("Could not identify user. Please log in again.");
+      return;
+    }
+    const result = await deleteUserData(user.email);
     if (result.success) {
       logout();
     } else {
