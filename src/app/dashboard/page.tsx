@@ -157,7 +157,7 @@ export default function DashboardPage() {
     if (!applications) return;
     let mounted = true;
     
-    const run = async () => {
+    const run = () => {
       setPremiumLoading(true);
       const values: number[] = [];
       for (const p of applications) {
@@ -184,7 +184,7 @@ export default function DashboardPage() {
       setPremiumLoading(false);
     };
 
-    void run();
+    run();
     return () => { mounted = false; };
   }, [applications]);
 
@@ -203,7 +203,7 @@ export default function DashboardPage() {
         <div className="bg-white/80 backdrop-blur-md border-b z-40">
           <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-blue-600" />
+              <Shield className="w-8 h-8 text-primary" />
               <span className="font-bold text-xl text-gray-900">Admin Dashboard</span>
             </div>
             <Button variant="outline" size="sm" onClick={handleExitSecretDashboard}>
@@ -219,7 +219,7 @@ export default function DashboardPage() {
           <>
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-2">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
                   <User className="w-7 h-7 text-white" />
                 </div>
                 <div>
@@ -233,7 +233,7 @@ export default function DashboardPage() {
             </div>
             
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
+              <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg font-medium flex items-center gap-2">
                     <FileText className="w-5 h-5" />
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {applications?.filter(a => a.status === "approved").length ?? 457}
+                    {applications?.filter(a => (a as any).status === "approved").length ?? 457}
                   </p>
                 </CardContent>
               </Card>
@@ -264,7 +264,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="grid md:grid-cols-4 gap-4 mb-8">
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
+              <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <FileText className="w-4 h-4" />
@@ -303,7 +303,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-amber-500 to-amber-600 text-white border-0">
+              <Card className="bg-gradient-to-br from-accent to-amber-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <Heart className="w-4 h-4" />
@@ -406,7 +406,7 @@ export default function DashboardPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <PieChart className="w-5 h-5 text-blue-600" />
+                    <PieChart className="w-5 h-5 text-primary" />
                     Policy Distribution
                   </CardTitle>
                   <CardDescription>Breakdown by policy type</CardDescription>
@@ -466,7 +466,7 @@ export default function DashboardPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-amber-600" />
+                    <CreditCard className="w-5 h-5 text-accent" />
                     Claims by Category
                   </CardTitle>
                   <CardDescription>Distribution of claim amounts</CardDescription>
@@ -481,7 +481,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="w-full bg-gray-100 rounded-full h-3">
                           <div 
-                            className="h-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 transition-all"
+                            className="h-3 rounded-full bg-gradient-to-r from-accent to-amber-600 transition-all"
                             style={{ width: `${claim.percentage}%` }}
                           />
                         </div>
@@ -508,8 +508,8 @@ export default function DashboardPage() {
                     >
                       {/* Left Side */}
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <User className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                          <User className="w-5 h-5 text-primary" />
                         </div>
 
                         <div>
