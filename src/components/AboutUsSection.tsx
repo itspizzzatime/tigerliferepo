@@ -24,7 +24,7 @@ export default function AboutUsSection() {
         <div>
           <h2 className="text-3xl font-bold mb-4">About Tiger Insurance</h2>
           <p className="text-muted-foreground mb-4">
-            TigerCare is dedicated to protecting families with approachable, affordable
+            TigerCa is dedicated to protecting families with approachable, affordable
             insurance plans that prioritize fast decisions and caring support. We combine
             industry expertise with simple online tools so you can get coverage with
             confidence. Our mission is to make quality insurance accessible to everyone,
