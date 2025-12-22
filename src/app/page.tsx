@@ -6,15 +6,15 @@ import AboutUsSection from "@/components/AboutUsSection";
 import ClientReviews from "@/components/ClientReviews";
 import InfoSections from "@/components/InfoSections";
 import ApplicationModal from "@/components/ApplicationModal";
-import SiteHeader from "@/components/SiteHeader";
+import NavBar from "@/components/NavBar";
 
 export default function HomePage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader onStartApplication={() => setModalOpen(true)} />
-      <main>
+      <NavBar />
+      <main className="pt-16">
         <HeroSection onStartApplication={() => setModalOpen(true)} />
         <PremiumCalculator />
         <AboutUsSection />
