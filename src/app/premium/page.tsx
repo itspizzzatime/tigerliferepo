@@ -52,7 +52,7 @@ export default function PremiumPage() {
         });
 
         if (!mounted) return;
-        setMonthlyPremium(Number.isFinite(annual) ? annual / 12 : null);
+        setMonthlyPremium(Number.isFinite(annual) ? annual : null);
       } catch {
         if (mounted) setMonthlyPremium(null);
       } finally {
