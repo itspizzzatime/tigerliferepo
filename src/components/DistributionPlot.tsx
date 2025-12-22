@@ -1,8 +1,8 @@
 "use client";
 import React from 'react';
 import Plot from 'react-plotly.js';
-import histDataJson from 'src/ml/data/hist_data.json';
-import weibullJson from 'src/ml/data/weibull_curve.json';
+import histDataJson from '@/ml/data/hist_data.json';
+import weibullJson from '@/ml/data/weibull_curve.json';
 
 type HistItem = { value: number };
 type WeibullItem = { x: number; pdf: number };
@@ -51,5 +51,3 @@ export default function DistributionPlot() {
     </div>
   );
 }
-
-    
