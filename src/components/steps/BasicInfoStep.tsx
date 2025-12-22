@@ -157,6 +157,18 @@ const collegeProgramsMap = {
   ],
 };
 
+const occupationOptions = [
+  "Unemployed",
+  "Construction",
+  "Military",
+  "Education",
+  "Healthcare",
+  "Manufacturing",
+  "Retail",
+  "Software and IT",
+  "Transportation",
+  "Other"
+];
 
 export default function BasicInfoStep({ data, updateData, onNext, onBack }: BasicInfoStepProps) {
   const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -175,6 +187,8 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
     e.preventDefault();
     onNext();
   };
+
+  const isValid = data.fullName && data.email && data.phone && data.dateOfBirth && data.address && data.emergencyContact;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -228,6 +242,18 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
               data-testid="input-phone"
             />
           </div>
+        </div>
+        
+        <div className="space-y-2">
+            <Label htmlFor="address">Address *</Label>
+            <Input
+              id="address"
+              value={data.address}
+              onChange={(e) => updateData({ address: e.target.value })}
+              placeholder="123 Main St, City, Country"
+              required
+              data-testid="input-address"
+            />
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
@@ -286,20 +312,25 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
               onChange={(e) => updateData({ fatherName: e.target.value })}
               placeholder="Juan Dela Cruz"
               required
-              data-testid="input-address"
+              data-testid="input-father-name"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="fatherOccupation">Father's Occupation *</Label>
-            <Input
+            <select
               id="fatherOccupation"
               value={data.fatherOccupation}
               onChange={(e) => updateData({ fatherOccupation: e.target.value })}
-              placeholder="Job"
               required
-              data-testid="input-father-occupation"
-            />
+              data-testid="select-father-occupation"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <option value="">Select occupation</option>
+              {occupationOptions.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -318,14 +349,19 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
 
           <div className="space-y-2">
             <Label htmlFor="motherOccupation">Mother's Occupation *</Label>
-            <Input
+             <select
               id="motherOccupation"
               value={data.motherOccupation}
               onChange={(e) => updateData({ motherOccupation: e.target.value })}
-              placeholder="Job"
               required
-              data-testid="input-mother-occupation"
-            />
+              data-testid="select-mother-occupation"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <option value="">Select occupation</option>
+              {occupationOptions.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -357,7 +393,7 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
               onChange={(e) => updateData({ emergencyName: e.target.value })}
               placeholder="Name"
               required
-              data-testid="input-emergency"
+              data-testid="input-emergency-name"
             />
           </div>
           <div className="space-y-2">
@@ -380,11 +416,15 @@ export default function BasicInfoStep({ data, updateData, onNext, onBack }: Basi
         </div>
       </div>
 
+        
+
+        
+
       <div className="flex justify-between pt-4 gap-3">
         <Button type="button" variant="outline" onClick={onBack} data-testid="button-back">
           Back
         </Button>
-        <Button type="submit" data-testid="button-next">
+        <Button type="submit" disabled={!isValid} data-testid="button-next">
           Next
         </Button>
       </div>

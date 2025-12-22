@@ -116,7 +116,8 @@ function calculateAge(dateOfBirth: string): number {
 
 // Helper to check for a condition in the preExistingConditions list
 function hasCondition(data: ApplicationData, conditionList: string[]): boolean {
-    const lowerCaseConditions = (data.preExistingConditions || []).map(c => c.toLowerCase());
+    if (!data.preExistingConditions) return false;
+    const lowerCaseConditions = (data.preExistingConditions || []).map(c => String(c).toLowerCase());
     return conditionList.some(risk => 
         lowerCaseConditions.includes(risk.toLowerCase())
     );
@@ -149,10 +150,9 @@ export function checkEligibility(data: ApplicationData): EligibilityResult {
     const hasAnyMediumCondition = hasCondition(data, MEDIUM_DISEASES);
 
     const isTobaccoHeavy = (data.smokingHabits || '').toLowerCase().includes('heavy');
-    const isSubstanceHeavy = hasSubstanceUse;
 
-    // If hndition, decline immediately
-    if (isTobaccoHeavy && (data.preExistingConditions || []).map(c => c.toLowerCase()).includes('heart')) {
+    // If heavy smoker with heart condition, decline immediately
+    if (isTobaccoHeavy && (data.preExistingConditions || []).map(c => String(c).toLowerCase()).includes('heart')) {
         return "Decline";
     }
 
