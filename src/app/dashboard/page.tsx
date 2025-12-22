@@ -13,20 +13,9 @@ import ApplicationModal from "@/components/ApplicationModal";
 import ApplicationResultDialog from "@/components/ApplicationResultDialog";
 import NavBar from "@/components/NavBar";
 import type { ApplicationData } from "@/components/ApplicationModal";
-import infoJson from "../../../data/info.json";
 import { parseIncomeOption } from "@/components/steps/utils/eligibility";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 import DistributionPlot from "@/components/DistributionPlot";
-import info from "../../../data/info.json";  
-
-const profiles = Object.entries(info.profiles).map(([id, profile]) => ({
-  id,
-  name: profile.fullName || "Unknown",
-  date: profile.dateOfBirth || "Unknown",
-  status: profile.preExistingConditions?.length ? "pending" : "approved"
-})).reverse().slice(0, 5); 
-
-const totalApplications = Object.keys(info.profiles).length;
 
 const monthlyPremiumData = [
   { month: "Jan", amount: 12500, growth: 8 },
@@ -58,22 +47,6 @@ const claimsData = [
   { month: "Dec", claims: 88, approved: 77, denied: 11 }, 
 ];
 
-const totalApps=totalApplications+560
-const roundedConditional = Math.round(totalApps*0.34);
-const roundedStandard = Math.round(totalApps*0.41);
-const roundedPremium=Math.round(totalApps*0.25);
-const policyDistribution = [
-    { type: "Conditional", count: roundedConditional, color: "text-blue-500", stroke: "#3b82f6", percentage: 34 },
-    { type: "Standard", count: roundedStandard, color: "text-green-500", stroke: "#22c55e", percentage: 41 },
-    { type: "Premium", count: roundedPremium, color: "text-purple-500", stroke: "#a855f7", percentage: 25 },
-];
-
-const radius = 40;
-const circumference = 2 * Math.PI * radius;
-const totalCount = policyDistribution.reduce((sum, item) => sum + item.count, 0);
-let currentOffset = 0;
-
-
 const claimsByCategory = [
   { category: "Hospital", amount: 45000, percentage: 35 },
   { category: "Outpatient", amount: 28000, percentage: 22 },
@@ -104,6 +77,36 @@ export default function DashboardPage() {
     queryFn: getQueryFn({ on401: "throw" }),
     enabled: !!user,
   });
+
+  const profiles = useMemo(() => {
+    if (!applications) return [];
+    return applications.map((profile: any) => ({
+      id: profile.id,
+      name: profile.fullName || "Unknown",
+      date: profile.dateOfBirth || "Unknown",
+      status: profile.preExistingConditions?.length ? "pending" : "approved"
+    })).reverse().slice(0, 5);
+  }, [applications]);
+
+  const totalApplications = useMemo(() => applications?.length ?? 0, [applications]);
+  
+  const totalApps = totalApplications + 560;
+
+  const policyDistribution = useMemo(() => {
+    const roundedConditional = Math.round(totalApps * 0.34);
+    const roundedStandard = Math.round(totalApps * 0.41);
+    const roundedPremium = Math.round(totalApps * 0.25);
+    return [
+      { type: "Conditional", count: roundedConditional, color: "text-blue-500", stroke: "#3b82f6", percentage: 34 },
+      { type: "Standard", count: roundedStandard, color: "text-green-500", stroke: "#22c55e", percentage: 41 },
+      { type: "Premium", count: roundedPremium, color: "text-purple-500", stroke: "#a855f7", percentage: 25 },
+    ];
+  }, [totalApps]);
+
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  let currentOffset = 0;
+
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -151,17 +154,14 @@ export default function DashboardPage() {
   const [premiumLoading, setPremiumLoading] = useState(false);
 
   useEffect(() => {
-    // compute estimated premiums for profiles in info.json (including anonymousDraft)
+    if (!applications) return;
     let mounted = true;
-    const profiles = (infoJson as any).profiles || {};
-    const all = Object.values(profiles).concat((infoJson as any).anonymousDraft ? [(infoJson as any).anonymousDraft] : []);
-
+    
     const run = async () => {
       setPremiumLoading(true);
       const values: number[] = [];
-      for (const p of all) {
+      for (const p of applications) {
         try {
-          // computePremiumFromCoeffs expects fields like: height, weight, annualGrossIncome, smokingHabits, alcoholConsumption, substanceUse
           const input = {
             height: (p as any).height ?? '',
             weight: (p as any).weight ?? '',
@@ -186,7 +186,7 @@ export default function DashboardPage() {
 
     void run();
     return () => { mounted = false; };
-  }, []);
+  }, [applications]);
 
   if (authLoading || !isAuthenticated) {
     return (
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {totalApplications? totalApps: 210}
+                    {totalApplications ? totalApps: 210}
                   </p>
                 </CardContent>
               </Card>
@@ -448,7 +448,7 @@ export default function DashboardPage() {
                       {policyDistribution.map((policy, index) => (
                         <div key={index} className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className={`w-3 h-3 rounded-full ${policy.color}`}></div>
+                            <div className={`w-3 h-3 rounded-full ${policy.color.replace('text-', 'bg-')}`}></div>
                             <span className="text-sm font-medium text-gray-700">{policy.type}</span>
                           </div>
                           <div className="text-right">
@@ -558,3 +558,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+```
