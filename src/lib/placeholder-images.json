@@ -5,6 +5,18 @@
       "description": "Abstract geometric shapes representing security and technology.",
       "imageUrl": "https://images.unsplash.com/photo-1721036264984-257372ced26d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2NjMwOTkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "abstract security"
+    },
+    {
+      "id": "hero-image",
+      "description": "A happy family enjoying a sunny day, symbolizing security and happiness.",
+      "imageUrl": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoYXBweSUyMGZhbWlseXxlbnwwfHx8fDE3NjYzODYzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "happy family"
+    },
+    {
+      "id": "about-us-image",
+      "description": "A modern office space with a team collaborating, representing a professional and dedicated company.",
+      "imageUrl": "https://images.unsplash.com/photo-1590650486895-79681b6f26a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwcm9mZXNzaW9uYWwlMjB0ZWFtfGVufDB8fHx8MTc2NjM5MTYzOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional team"
     }
   ]
 }
