@@ -24,10 +24,11 @@ export default function AboutUsSection() {
         <div>
           <h2 className="text-3xl font-bold mb-4">About Tiger Insurance</h2>
           <p className="text-muted-foreground mb-4">
-            For over 25 years, Tiger Insurance has been a trusted partner for families and individuals seeking reliable and affordable health coverage. Our mission is to provide peace of mind through comprehensive insurance solutions that protect what matters most.
-          </p>
-          <p className="text-muted-foreground">
-            We believe in transparency, integrity, and putting our clients first. Our dedicated team of experts is here to guide you every step of the way, ensuring you find the perfect plan to fit your needs and budget.
+            TigerCare is dedicated to protecting families with approachable, affordable
+            insurance plans that prioritize fast decisions and caring support. We combine
+            industry expertise with simple online tools so you can get coverage with
+            confidence. Our mission is to make quality insurance accessible to everyone,
+            ensuring peace of mind for you and your loved ones.
           </p>
         </div>
       </div>

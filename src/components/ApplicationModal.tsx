@@ -16,6 +16,7 @@ import AcceptedPage from "./steps/AcceptedPage";
 import DeclinePage from "./steps/DeclinePage";
 import LoginStep from "./steps/LoginStep";
 import { checkEligibility, EligibilityResult } from "./steps/utils/eligibility";
+import { saveApplication } from "@/app/actions";
 
 interface ApplicationModalProps {
   open: boolean;
@@ -99,25 +100,30 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
   const handleNext = async () => {
     if (currentStep === 7) {
         setIsSubmitting(true);
-      // After login (now step 7), determine status and finalize
-      const isApproved = determineApplicationStatus(applicationData);
       
-      if (onResultReady) {
-        onResultReady(isApproved ? "approved" : "declined", applicationData);
+      const eligibilityResult = checkEligibility(applicationData);
+      const isApproved = eligibilityResult === 'Standard' || eligibilityResult === 'Conditional';
+
+      try {
+        await saveApplication(applicationData);
+        toast({
+          title: "Application Submitted",
+          description: "Your application has been saved successfully!",
+        });
+
+        if (onResultReady) {
+          onResultReady(isApproved ? "approved" : "declined", applicationData);
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to submit application. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSubmitting(false);
+        handleClose();
       }
-      
-      // Mock submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Application Submitted",
-        description: "Your application has been saved successfully!",
-      });
-
-      setIsSubmitting(false);
-
-      // Close the modal and reset
-      handleClose();
 
     } else {
       goToStep(currentStep + 1);
@@ -138,15 +144,6 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
 
   const updateData = (newData: Partial<ApplicationData>) => {
     setApplicationData((prev) => ({ ...prev, ...newData }));
-  };
-
-  const determineApplicationStatus = (data: ApplicationData): boolean => {
-    if (data.preExistingConditions.length > 3) return false;
-    if ((data.smokingHabits || '').toLowerCase().includes('heavy') && data.preExistingConditions.includes('heart')) return false;
-
-    const hospitalizationCount = data.hospitalizations.split('\n').filter(h => h.trim()).length;
-    if (hospitalizationCount > 5) return false;
-    return true;
   };
   
   const renderStep = () => {
@@ -219,3 +216,5 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
     </Dialog>
   );
 }
+
+    

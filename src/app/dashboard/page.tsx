@@ -15,7 +15,17 @@ import NavBar from "@/components/NavBar";
 import type { ApplicationData } from "@/components/ApplicationModal";
 import { parseIncomeOption } from "@/components/steps/utils/eligibility";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
-// import DistributionPlot from "@/components/DistributionPlot";
+import DistributionPlot from "@/components/DistributionPlot";
+import info from "../../data/info.json";  
+
+const profiles = Object.entries(info.profiles).map(([id, profile]: [string, any]) => ({
+  id,
+  name: profile.fullName || "Unknown",
+  date: profile.dateOfBirth || "Unknown",
+  status: profile.preExistingConditions?.length ? "pending" : "approved"
+})).reverse().slice(0, 5); 
+
+const totalApplications = Object.keys(info.profiles).length;
 
 const monthlyPremiumData = [
   { month: "Jan", amount: 12500, growth: 8 },
@@ -65,23 +75,10 @@ export default function DashboardPage() {
     data: ApplicationData;
   } | null>(null);
 
-
   const { data: applications, isLoading } = useQuery<any[]>({
     queryKey: ["/api/my-applications"],
     enabled: !!user,
   });
-
-  const profiles = useMemo(() => {
-    if (!applications) return [];
-    return applications.map((profile: any) => ({
-      id: profile.id,
-      name: profile.fullName || "Unknown",
-      date: profile.dateOfBirth || "Unknown",
-      status: profile.preExistingConditions?.length ? "pending" : "approved"
-    })).reverse().slice(0, 5);
-  }, [applications]);
-
-  const totalApplications = useMemo(() => applications?.length ?? 0, [applications]);
   
   const totalApps = totalApplications + 560;
 
@@ -200,8 +197,7 @@ export default function DashboardPage() {
       )}
 
       <div className="max-w-6xl mx-auto px-6 py-8">
-        { (
-          <>
+        
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-2">
                 <div className="w-14 h-14 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
@@ -241,7 +237,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {applications?.filter(a => (a as any).status === "approved").length ?? 457}
+                    {457}
                   </p>
                 </CardContent>
               </Card>
@@ -532,12 +528,11 @@ export default function DashboardPage() {
                     <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
                   </CardHeader>
                   <CardContent>
+                    <DistributionPlot />
                   </CardContent>
                 </Card>
               </div>
             </div>
-          </>
-        )}        
       </div>
     </div>
   );
