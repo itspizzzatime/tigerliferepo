@@ -279,7 +279,6 @@ export default function HealthInfoStep({ data, updateData, onNext, onBack }: Hea
                 <SelectItem value="light">Light (1-10 cigarettes/week)</SelectItem>
                 <SelectItem value="moderate">Moderate (10-20 cigarettes/week)</SelectItem>
                 <SelectItem value="heavy">Heavy (20+ cigarettes/week)</SelectItem>
-                <SelectItem value="vape">Vape</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -15,8 +15,9 @@ import ReviewStep from "./steps/ReviewStep";
 import AcceptedPage from "./steps/AcceptedPage";
 import DeclinePage from "./steps/DeclinePage";
 import LoginStep from "./steps/LoginStep";
-import { checkEligibility, EligibilityResult } from "./steps/utils/eligibility";
+import { checkEligibility } from "./steps/utils/eligibility";
 import { saveApplication } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 interface ApplicationModalProps {
   open: boolean;
@@ -87,6 +88,7 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
   const { toast } = useToast();
   const { user } = useAuth();
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   const stepLabels = ["Info", "Basic", "Health", "History", "Review", "Result", "Login"];
 
@@ -114,6 +116,12 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
         if (onResultReady) {
           onResultReady(isApproved ? "approved" : "declined", applicationData);
         }
+        
+        // Redirect to premium page on successful submission
+        if (isApproved) {
+            router.push('/premium');
+        }
+
       } catch (error) {
         toast({
           title: "Error",
@@ -216,5 +224,3 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
     </Dialog>
   );
 }
-
-    
