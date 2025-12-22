@@ -115,15 +115,8 @@ export default function PremiumPage() {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">Welcome{displayName ? `, ${displayName}` : ""}!</h1>
-              <p className="text-gray-500 mt-1">Your insurance portal dashboard</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button onClick={handleProfileSettings} variant="outline">Profile</Button>
-              <Button onClick={handleLogout} variant="outline" className="flex items-center gap-2">
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
+              <h1 className="text-4xl font-bold text-gray-900">Your Policy Overview</h1>
+              <p className="text-gray-500 mt-1">Review your coverage and premium details.</p>
             </div>
           </div>
         </div>
