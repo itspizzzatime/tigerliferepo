@@ -2,15 +2,15 @@
   "placeholderImages": [
     {
       "id": "auth-image",
-      "description": "Abstract geometric shapes representing security and technology.",
-      "imageUrl": "https://images.unsplash.com/photo-1721036264984-257372ced26d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2NjMwOTkxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "abstract security"
+      "description": "University of Santo Tomas Main Building at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1604882737332-682917c2a4a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxVbml2ZXJzaXR5JTIwb2YlMjBTYW50byUyMFRvbWFzfGVufDB8fHx8MTcyNDA0OTcwMnww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "university campus"
     },
     {
       "id": "hero-image",
-      "description": "A happy family enjoying a sunny day, symbolizing security and happiness.",
-      "imageUrl": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoYXBweSUyMGZhbWlseXxlbnwwfHx8fDE3NjYzODYzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "happy family"
+      "description": "The facade of the University of Santo Tomas Main Building at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1604882737332-682917c2a4a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxVbml2ZXJzaXR5JTIwb2YlMjBTYW50byUyMFRvbWFzfGVufDB8fHx8MTcyNDA0OTcwMnww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "university campus"
     },
     {
       "id": "about-us-image",
