@@ -1,5 +1,6 @@
 "use client";
-export const dynamic = 'force-dynamic';
+
+import dynamic from 'next/dynamic';
 
 import { useState, useMemo, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -16,9 +17,14 @@ import NavBar from "@/components/NavBar";
 import type { ApplicationData } from "@/components/ApplicationModal";
 import { parseIncomeOption } from "@/components/steps/utils/eligibility";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
-import DistributionPlot from "@/components/DistributionPlot";
 import info from "../../data/info.json";  
 
+
+
+const DistributionPlot = dynamic(() => import('@/components/DistributionPlot'), { 
+  ssr: false,
+  loading: () => <div className="h-[360px] w-full animate-pulse bg-gray-100" />
+});
 const profiles = Object.entries(info.profiles).map(([id, profile]: [string, any]) => ({
   id,
   name: profile.fullName || "Unknown",

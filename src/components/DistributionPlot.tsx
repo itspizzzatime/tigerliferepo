@@ -23,7 +23,9 @@ export default function DistributionPlot() {
             histnorm: 'probability density',
             marker: { color: 'rgba(59,130,246,0.6)' },
             opacity: 0.7,
-            nbinsx: 60,
+            // Use 'nbinsx' as any to bypass the strict Partial<PlotData> type check
+            // which often misses this property in certain @types versions
+            ...({ nbinsx: 60 } as any),
             name: 'Frequency (Normalized)',
           },
           {
@@ -34,14 +36,15 @@ export default function DistributionPlot() {
             line: { color: 'rgb(220,38,38)', width: 3 },
             name: 'Weibull PDF',
             yaxis: 'y1',
-          },
+          } as any, // 'as any' helps with the secondary axis type-matching
         ]}
         layout={{
-          title: 'Frequency Distribution vs. Weibull Fit',
+          // Change title from string to object to satisfy strict types
+          title: { text: 'Frequency Distribution vs. Weibull Fit' },
           autosize: true,
           margin: { t: 40, b: 40, l: 40, r: 20 },
-          xaxis: { title: 'Value' },
-          yaxis: { title: 'Density' },
+          xaxis: { title: { text: 'Value' } },
+          yaxis: { title: { text: 'Density' } },
           legend: { orientation: 'h', x: 0.02, y: 1.05 },
         }}
         useResizeHandler
