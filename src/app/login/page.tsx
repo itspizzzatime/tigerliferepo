@@ -84,12 +84,6 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="underline">
-            Sign up
-            </Link>
-          </div>
         </form>
       </Form>
     </AuthLayout>
