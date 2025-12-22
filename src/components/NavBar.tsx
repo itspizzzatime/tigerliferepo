@@ -31,7 +31,7 @@ export default function NavBar() {
         <Link href="/" className="flex items-center gap-2 no-underline cursor-pointer group">
            <span className="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight transition-colors group-hover:text-primary">
             Tiger
-            <span className="text-primary group-hover:text-gray-800 transition-colors">Insurance</span>
+            <span className="text-primary group-hover:text-gray-800 transition-colors">Care</span>
           </span>
         </Link>
         

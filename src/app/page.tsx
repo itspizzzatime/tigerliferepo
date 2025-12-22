@@ -26,10 +26,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-4">Tiger Insurance</h3>
-              <p className="text-sm text-muted-foreground">
-                Protecting families since 1995
-              </p>
+              <h3 className="font-bold text-lg mb-4">Tiger Care</h3>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Products</h4>

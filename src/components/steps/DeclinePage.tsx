@@ -40,7 +40,7 @@ export default function DeclinePage({ onClose }: DeclinePageProps) {
               <Mail className="w-5 h-5 text-primary flex-shrink-0" />
               <div>
                 <p className="font-medium">Email us:</p>
-                <p className="text-muted-foreground">support@tigerinsurance.com</p>
+                <p className="text-muted-foreground">support@tigercare.com</p>
               </div>
             </div>
           </div>

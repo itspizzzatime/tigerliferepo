@@ -21,7 +21,7 @@ export default function InfoSections() {
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Hospitalization Coverage</p>
-                    <p className="text-sm text-muted-foreground">Up to XXXX per year</p>
+                    <p className="text-sm text-muted-foreground">Up to 30,000 per year</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
