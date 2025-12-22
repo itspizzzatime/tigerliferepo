@@ -65,12 +65,6 @@ export default function DashboardPage() {
     data: ApplicationData;
   } | null>(null);
 
-    useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.replace('/login');
-    }
-  }, [authLoading, isAuthenticated, router]);
-
 
   const { data: applications, isLoading } = useQuery<any[]>({
     queryKey: ["/api/my-applications"],
@@ -186,14 +180,6 @@ export default function DashboardPage() {
     run();
     return () => { mounted = false; };
   }, [applications]);
-
-  if (authLoading || !isAuthenticated) {
-    return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
-            <p>Loading...</p>
-        </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -556,3 +542,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
