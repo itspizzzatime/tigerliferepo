@@ -11,7 +11,7 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
+  FormLabel as Label,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
