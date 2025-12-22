@@ -30,11 +30,14 @@ export default function PremiumPage() {
   const displayName = userProfile?.fullName || "Guest";
 
   useEffect(() => {
-    if (!userProfile) return;
+    if (!userProfile) {
+        setMonthlyPremium(null);
+        return;
+    }
 
     let mounted = true;
 
-    (async () => {
+    const calculatePremium = () => {
       setMonthlyLoading(true);
       try {
         // compute premium from the actual user's profile
@@ -55,7 +58,9 @@ export default function PremiumPage() {
       } finally {
         if (mounted) setMonthlyLoading(false);
       }
-    })();
+    };
+
+    calculatePremium();
 
     return () => { mounted = false; };
   }, [userProfile]);
