@@ -1,52 +1,221 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { useState, useEffect, useRef } from "react";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import ProgressIndicator from "./ProgressIndicator";
+import InsuranceInfoStep from "./steps/InsuranceInfoStep";
+import BasicInfoStep from "./steps/BasicInfoStep";
+import HealthInfoStep from "./steps/HealthInfoStep";
+import HospitalizationStep from "./steps/HospitalizationStep";
+import ReviewStep from "./steps/ReviewStep";
+import AcceptedPage from "./steps/AcceptedPage";
+import DeclinePage from "./steps/DeclinePage";
+import LoginStep from "./steps/LoginStep";
+import { checkEligibility, EligibilityResult } from "./steps/utils/eligibility";
+import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 
 interface ApplicationModalProps {
   open: boolean;
   onClose: () => void;
+  onResultReady?: (status: "approved" | "declined", data: ApplicationData) => void;
 }
 
-export default function ApplicationModal({ open, onClose }: ApplicationModalProps) {
+export interface ApplicationData {
+  fullName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  college: string;
+  program: string;
+  fatherName: string;
+  fatherOccupation: string;
+  motherName: string;
+  motherOccupation: string;
+  annualGrossIncome: string;
+  address: string;
+  emergencyContact: string;
+  emergencyName: string;
+  preExistingConditions: string[];
+
+  height?: string;
+  weight?: string;
+  smokingHabits?: string;
+  lifestyle?: string;
+  substanceUse?: "none" | "occasional" | "heavy";
+
+  currentMedications: string;
+  familyHistory: string;
+  alcoholConsumption: "none" | "occasional" | "heavy";
+  hospitalizations: string;
+}
+
+const initialData: ApplicationData = {
+  fullName: "",
+  email: "",
+  phone: "",
+  dateOfBirth: "",
+  college: "",
+  address: "",
+  emergencyContact: "",
+  emergencyName: "",
+  program: "",
+  fatherName: "",
+  fatherOccupation: "",
+  motherName: "",
+  motherOccupation: "",
+  annualGrossIncome: "",
+  preExistingConditions: [],
+  height: "",
+  weight: "",
+  smokingHabits: "",
+  lifestyle: "",
+  substanceUse: "none",
+  currentMedications: "",
+  familyHistory: "",
+  alcoholConsumption: "none",
+  hospitalizations: "",
+};
+
+export default function ApplicationModal({ open, onClose, onResultReady }: ApplicationModalProps) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [applicationData, setApplicationData] = useState<ApplicationData>(initialData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const stepLabels = ["Info", "Basic", "Health", "History", "Review", "Result", "Login"];
+
+  const goToStep = (step: number) => {
+    setCurrentStep(step);
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleNext = async () => {
+    if (currentStep === 7) {
+        setIsSubmitting(true);
+      // After login (now step 7), determine status and finalize
+      const isApproved = determineApplicationStatus(applicationData);
+      
+      if (onResultReady) {
+        onResultReady(isApproved ? "approved" : "declined", applicationData);
+      }
+      
+      // Mock submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Application Submitted",
+        description: "Your application has been saved successfully!",
+      });
+
+      setIsSubmitting(false);
+
+      // Close the modal and reset
+      handleClose();
+
+    } else {
+      goToStep(currentStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+        goToStep(currentStep - 1);
+    }
+  };
+
+  const handleClose = () => {
+    setCurrentStep(1);
+    setApplicationData(initialData);
+    onClose();
+  };
+
+  const updateData = (newData: Partial<ApplicationData>) => {
+    setApplicationData((prev) => ({ ...prev, ...newData }));
+  };
+
+  const determineApplicationStatus = (data: ApplicationData): boolean => {
+    if (data.preExistingConditions.length > 3) return false;
+    if ((data.smokingHabits || '').toLowerCase().includes('heavy') && data.preExistingConditions.includes('heart')) return false;
+
+    const hospitalizationCount = data.hospitalizations.split('\n').filter(h => h.trim()).length;
+    if (hospitalizationCount > 5) return false;
+    return true;
+  };
+  
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <InsuranceInfoStep onNext={handleNext} />;
+      case 2:
+        return <BasicInfoStep data={applicationData} updateData={updateData} onNext={handleNext} onBack={handleBack} />;
+      case 3:
+        return <HealthInfoStep data={applicationData} updateData={updateData} onNext={handleNext} onBack={handleBack} />;
+      case 4:
+        return <HospitalizationStep data={applicationData} updateData={updateData} onNext={handleNext} onBack={handleBack} />;
+      case 5:
+        return (
+          <ReviewStep
+            data={applicationData}
+            onNext={handleNext}
+            onBack={handleBack}
+            isSubmitting={isSubmitting}
+          />
+        );
+      case 6: {
+        const eligibility = checkEligibility(applicationData);
+
+        if (eligibility === 'Standard' || eligibility === 'Conditional') {
+          return (
+            <AcceptedPage
+              onContinue={() => goToStep(7)}
+              applicationData={applicationData}
+            />
+          );
+        }
+
+        return <DeclinePage onClose={handleClose} />;
+      }
+      case 7:
+        return <LoginStep onNext={handleNext} onClose={handleClose} onBack={handleBack} isSubmitting={isSubmitting} applicationData={applicationData} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Start Your Application</DialogTitle>
-          <DialogDescription>
-            Fill in your details below to begin the application process.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" placeholder="Your full name" className="col-span-3" />
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent ref={contentRef} className="max-w-3xl max-h-[90vh] overflow-y-auto p-0" data-testid="dialog-application">
+        <div className="sticky top-0 bg-background z-10 p-6 border-b">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Insurance Application</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              data-testid="button-close-modal"
+            >
+              <X className="w-5 h-5" />
+            </Button>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input id="email" type="email" placeholder="your.email@example.com" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="phone" className="text-right">
-              Phone
-            </Label>
-            <Input id="phone" type="tel" placeholder="(123) 456-7890" className="col-span-3" />
-          </div>
+          {currentStep <= 7 && (
+            <ProgressIndicator
+              currentStep={currentStep}
+              totalSteps={7}
+              stepLabels={stepLabels}
+            />
+          )}
         </div>
-        <Button type="submit" className="w-full">Continue Application</Button>
+        <div className="p-6">
+          {renderStep()}
+        </div>
       </DialogContent>
     </Dialog>
   );
