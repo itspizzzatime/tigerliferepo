@@ -11,12 +11,13 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel as Label,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import AuthLayout from "@/components/auth/AuthLayout";
-import { User, Lock } from "lucide-react";
+import { User, Lock, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +48,7 @@ export default function LoginPage() {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-2 text-left">
-                <Label>Email</Label>
+                <FormLabel>Email</FormLabel>
                 <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <FormControl>
@@ -63,7 +65,7 @@ export default function LoginPage() {
             render={({ field }) => (
               <FormItem className="space-y-2 text-left">
                 <div className="flex items-center">
-                  <Label>Password</Label>
+                  <FormLabel>Password</FormLabel>
                   <Link
                     href="/forgot-password"
                     className="ml-auto inline-block text-sm underline"
@@ -84,6 +86,23 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Login
           </Button>
+          <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border/30"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-card text-muted-foreground"></span>
+              </div>
+            </div>
+            <Button 
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => router.push('/')}
+            >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+            </Button>
         </form>
       </Form>
     </AuthLayout>
