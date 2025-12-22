@@ -40,19 +40,36 @@ export default function PremiumPage() {
     const calculatePremium = () => {
       setMonthlyLoading(true);
       try {
-        // compute premium from the actual user's profile
         const profile = userProfile as any;
-        const annual = computePremiumFromCoeffs({
-          height: profile?.height ? Number(profile.height) : 170,
-          weight: profile?.weight ? Number(profile.weight) : 70,
-          annualGrossIncome: profile?.annualGrossIncome ?? "300k_600k",
-          smokingHabits: profile?.smokingHabits ?? "none",
-          alcoholConsumption: profile?.alcoholConsumption ?? "none",
-          substanceUse: profile?.substanceUse ?? "none",
+        
+        // Ensure all required fields are present before calculating
+        if (
+          !profile?.height ||
+          !profile?.weight ||
+          !profile?.annualGrossIncome ||
+          !profile?.smokingHabits ||
+          !profile?.alcoholConsumption ||
+          !profile?.substanceUse
+        ) {
+          if (mounted) {
+            setMonthlyPremium(null);
+            setMonthlyLoading(false);
+          }
+          return;
+        }
+        
+        const premium = computePremiumFromCoeffs({
+          height: Number(profile.height),
+          weight: Number(profile.weight),
+          annualGrossIncome: profile.annualGrossIncome,
+          smokingHabits: profile.smokingHabits,
+          alcoholConsumption: profile.alcoholConsumption,
+          substanceUse: profile.substanceUse,
+          preExistingConditions: profile.preExistingConditions || [],
         });
 
         if (!mounted) return;
-        setMonthlyPremium(Number.isFinite(annual) ? annual : null);
+        setMonthlyPremium(Number.isFinite(premium) ? premium : null);
       } catch {
         if (mounted) setMonthlyPremium(null);
       } finally {
@@ -279,3 +296,5 @@ export default function PremiumPage() {
     </div>
   );
 }
+
+    
