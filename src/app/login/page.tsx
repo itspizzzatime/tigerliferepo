@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import AuthLayout from "@/components/auth/AuthLayout";
+import { User, Lock } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -38,23 +39,20 @@ export default function LoginPage() {
 
   return (
     <AuthLayout>
-      <div className="grid gap-2 text-center">
-        <h2 className="text-2xl font-bold">Login</h2>
-        <p className="text-balance text-muted-foreground">
-          Enter your email below to login to your account
-        </p>
-      </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="grid gap-2 text-left">
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="m@example.com" {...field} />
-                </FormControl>
+              <FormItem className="space-y-2 text-left">
+                <Label>Email</Label>
+                <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <FormControl>
+                        <Input placeholder="name@example.com" {...field} className="pl-10"/>
+                    </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -63,9 +61,9 @@ export default function LoginPage() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="grid gap-2 text-left">
+              <FormItem className="space-y-2 text-left">
                 <div className="flex items-center">
-                  <FormLabel>Password</FormLabel>
+                  <Label>Password</Label>
                   <Link
                     href="/forgot-password"
                     className="ml-auto inline-block text-sm underline"
@@ -73,9 +71,12 @@ export default function LoginPage() {
                     Forgot your password?
                   </Link>
                 </div>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
+                <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <FormControl>
+                    <Input type="password" {...field} className="pl-10" />
+                    </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -83,14 +84,14 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Login
           </Button>
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="underline">
+            Sign up
+            </Link>
+          </div>
         </form>
       </Form>
-      <div className="mt-4 text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link href="/signup" className="underline">
-          Sign up
-        </Link>
-      </div>
     </AuthLayout>
   );
 }

@@ -1,36 +1,41 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { Logo } from "@/components/icons";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Lock } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
-  const authImage = PlaceHolderImages.find((p) => p.id === "auth-image");
 
-  return (
-    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:grid-cols-5">
-      <div className="flex items-center justify-center py-12 xl:col-span-2">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
-            <Logo className="mx-auto h-10 w-auto text-primary" />
-            <h1 className="text-3xl font-bold font-headline">Tiger Insurance</h1>
-            <p className="text-balance text-muted-foreground">
-              Your Trusted Insurance Partner
-            </p>
-          </div>
-          {children}
+export default function AuthLayout({ children }: { children: ReactNode }) {
+    const authImage = PlaceHolderImages.find((p) => p.id === "auth-image");
+
+    return (
+        <div
+          className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
+        >
+          {authImage && (
+            <Image
+                src={authImage.imageUrl}
+                alt={authImage.description}
+                fill
+                className="object-cover"
+                data-ai-hint={authImage.imageHint}
+            />
+          )}
+          <div className="absolute inset-0 bg-black/50" />
+          <Card className="relative w-full max-w-md bg-card/80 backdrop-blur-sm border-border/50">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <CardTitle className="text-2xl">Secure Access</CardTitle>
+              <CardDescription>
+                Enter your credentials to continue
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+                {children}
+            </CardContent>
+          </Card>
         </div>
-      </div>
-      <div className="hidden bg-muted lg:block xl:col-span-3 relative">
-        {authImage && (
-          <Image
-            src={authImage.imageUrl}
-            alt={authImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={authImage.imageHint}
-          />
-        )}
-      </div>
-    </div>
-  );
+      );
 }
