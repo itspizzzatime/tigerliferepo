@@ -1,25 +1,23 @@
 "use client";
 
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
+// 1. Import your actual image file from your folder (e.g., src/assets)
+import aboutUsImg from "@/lib/about.png"; 
 
 export default function AboutUsSection() {
-  const aboutImage = PlaceHolderImages.find(p => p.id === 'about-us-image');
-
   return (
     <section className="py-16 bg-card">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          {aboutImage && (
-             <Image
-             src={aboutImage.imageUrl}
-             alt={aboutImage.description}
-             width={600}
-             height={400}
-             className="rounded-lg shadow-lg"
-             data-ai-hint={aboutImage.imageHint}
-           />
-          )}
+          {/* 2. Use the imported variable name as the src */}
+          <Image
+            src={aboutUsImg}
+            alt="The Tiger Insurance team working together"
+            width={600}
+            height={400}
+            className="rounded-lg shadow-lg"
+            priority // Optional: adds loading priority
+          />
         </div>
         <div>
           <h2 className="text-3xl font-bold mb-4">About Tiger Insurance</h2>
