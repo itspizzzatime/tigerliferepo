@@ -47,4 +47,13 @@ export async function saveApplication(applicationData: any) {
   }
 }
 
-    
+export async function deleteUserData() {
+    try {
+        // Instead of deleting the file, we clear the profiles to avoid breaking static imports.
+        await writeDb({ profiles: {} });
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to delete user data:", error);
+        return { success: false, error: "Failed to delete user data." };
+    }
+}

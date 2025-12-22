@@ -6,13 +6,15 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, CheckCircle, LogOut, User, FileText, Calendar, Heart, Phone } from "lucide-react";
+import { Shield, CheckCircle, User, FileText, Calendar, Heart, Phone } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import TermsModal from "@/components/TermsModal";
 import ClaimModal from "@/components/ClaimModal";
 import PayModal from "@/components/PayModal";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 import info from "../../data/info.json";
+import CancelSubscriptionDialog from "@/components/CancelSubscriptionDialog";
+import { deleteUserData } from "@/app/actions";
 
 export default function PremiumPage() {
   const router = useRouter();
@@ -22,6 +24,7 @@ export default function PremiumPage() {
   const [showTerms, setShowTerms] = useState(false);
   const [showClaim, setShowClaim] = useState(false);
   const [showPay, setShowPay] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
   
   const profiles = Object.values(info.profiles);
   const lastProfile = profiles.length > 0 ? profiles[profiles.length - 1] : null;
@@ -82,8 +85,6 @@ export default function PremiumPage() {
     return () => { mounted = false; };
   }, [userProfile]);
 
-
-
   const handleLogout = () => {
     logout();
     router.push("/");
@@ -105,6 +106,16 @@ export default function PremiumPage() {
 
   const handleFileClaim = () => {
     setShowClaim(true);
+  };
+
+  const handleConfirmCancel = async () => {
+    const result = await deleteUserData();
+    if (result.success) {
+      logout();
+    } else {
+      alert(result.error || "Something went wrong.");
+    }
+    setShowCancelDialog(false);
   };
 
   return (
@@ -282,12 +293,28 @@ export default function PremiumPage() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="mt-8 border-destructive/20">
+          <CardHeader>
+            <CardTitle className="text-destructive">Cancel Subscription</CardTitle>
+            <CardDescription>Permanently delete your account and all associated data.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="destructive" onClick={() => setShowCancelDialog(true)}>
+                Cancel My Subscription
+            </Button>
+          </CardContent>
+        </Card>
+
       </div>
       <TermsModal open={showTerms} onOpenChange={setShowTerms} />
       <ClaimModal open={showClaim} onOpenChange={setShowClaim} />
       <PayModal open={showPay} onOpenChange={setShowPay} amount={monthlyPremium} />
+      <CancelSubscriptionDialog 
+        open={showCancelDialog}
+        onOpenChange={setShowCancelDialog}
+        onConfirm={handleConfirmCancel}
+      />
     </div>
   );
 }
-
-    
