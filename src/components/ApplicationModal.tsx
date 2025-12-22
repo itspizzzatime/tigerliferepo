@@ -16,7 +16,6 @@ import AcceptedPage from "./steps/AcceptedPage";
 import DeclinePage from "./steps/DeclinePage";
 import LoginStep from "./steps/LoginStep";
 import { checkEligibility, EligibilityResult } from "./steps/utils/eligibility";
-import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 
 interface ApplicationModalProps {
   open: boolean;

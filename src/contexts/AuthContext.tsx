@@ -45,6 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signup = (email: string) => {
+    // For now, signup will just log the user in.
+    // In a real app, you'd have a proper registration flow.
     login(email);
   };
 
@@ -54,17 +56,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/login');
   };
 
+  const value = {
+    user,
+    login,
+    signup,
+    logout,
+    isAuthenticated: !!user,
+    isLoading,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        signup,
-        logout,
-        isAuthenticated: !!user,
-        isLoading,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
