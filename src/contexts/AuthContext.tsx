@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const userData = { email };
     localStorage.setItem('authUser', JSON.stringify(userData));
     setUser(userData);
-    router.push('/dashboard');
+    router.push('/premium');
   };
 
   const signup = (email: string) => {
