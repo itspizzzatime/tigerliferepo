@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { getQueryFn } from "@/lib/queryClient";
+// import { getQueryFn } from "@/lib/queryClient";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +15,7 @@ import NavBar from "@/components/NavBar";
 import type { ApplicationData } from "@/components/ApplicationModal";
 import { parseIncomeOption } from "@/components/steps/utils/eligibility";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
-import DistributionPlot from "@/components/DistributionPlot";
+// import DistributionPlot from "@/components/DistributionPlot";
 
 const monthlyPremiumData = [
   { month: "Jan", amount: 12500, growth: 8 },
@@ -74,7 +74,6 @@ export default function DashboardPage() {
 
   const { data: applications, isLoading } = useQuery<any[]>({
     queryKey: ["/api/my-applications"],
-    queryFn: getQueryFn({ on401: "throw" }),
     enabled: !!user,
   });
 
@@ -547,7 +546,6 @@ export default function DashboardPage() {
                     <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DistributionPlot />
                   </CardContent>
                 </Card>
               </div>

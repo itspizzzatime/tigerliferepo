@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { AuthProvider } from '@/contexts/AuthContext';
 import { Toaster } from '@/components/ui/toaster';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
+import Providers from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: 'Tiger Insurance',
@@ -27,12 +24,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased h-full">
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-        </QueryClientProvider>
-        <Toaster />
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
