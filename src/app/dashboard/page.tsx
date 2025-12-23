@@ -141,7 +141,7 @@ export default function DashboardPage() {
     });
   };
 
-  const handleExitSecretDashboard = () => {
+  const handleBackToHome = () => {
     router.push('/');
   };
 
@@ -195,9 +195,9 @@ export default function DashboardPage() {
               <Shield className="w-8 h-8 text-primary" />
               <span className="font-bold text-xl text-gray-900">Admin Dashboard</span>
             </div>
-            <Button variant="outline" size="sm" onClick={handleExitSecretDashboard}>
+            <Button variant="outline" size="sm" onClick={handleBackToHome}>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Exit Dashboard
+              Back to Home
             </Button>
           </div>
         </div>
