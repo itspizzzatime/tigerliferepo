@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { LogOut, LogIn, LayoutDashboard, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { Logo } from "./icons";
 
 export default function NavBar() {
   const { user, logout, isLoading } = useAuth();
@@ -32,6 +33,7 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-background/80 border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 no-underline cursor-pointer group">
+           <Logo className="h-8 w-8 text-ust-gold" />
            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             <span className="text-ust-gold">Tiger</span>
             <span className="text-tiger-brown">Care</span>
