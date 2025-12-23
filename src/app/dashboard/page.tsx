@@ -20,6 +20,7 @@ import info from "../../data/info.json";
 import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
 import IncomeDistributionChart from "@/components/charts/IncomeDistributionChart";
 import ConditionsPieChart from "@/components/charts/ConditionsPieChart";
+import ScrollAnimate from '@/components/ScrollAnimate';
 
 
 const DistributionPlot = dynamic(() => import('@/components/DistributionPlot'), { 
@@ -231,49 +232,56 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         
             <div className="mb-8">
-              <div className="flex items-center gap-4 mb-2">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
-                  <User className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-3xl font-bold text-gray-900">Admin Access</h1>
-                    <Badge className="bg-green-100 text-green-700">Verified</Badge>
+              <ScrollAnimate>
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
+                    <User className="w-7 h-7 text-white" />
                   </div>
-                  <p className="text-gray-500">Full system access granted</p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h1 className="text-3xl font-bold text-gray-900">Admin Access</h1>
+                      <Badge className="bg-green-100 text-green-700">Verified</Badge>
+                    </div>
+                    <p className="text-gray-500">Full system access granted</p>
+                  </div>
                 </div>
-              </div>
+              </ScrollAnimate>
             </div>
             
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-0">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-medium flex items-center gap-2">
-                    <FileText className="w-5 h-5" />
-                    Total Applications
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {isLoading ? '...' : totalApps}
-                  </p>
-                </CardContent>
-              </Card>
+              <ScrollAnimate>
+                <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-0">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg font-medium flex items-center gap-2">
+                      <FileText className="w-5 h-5" />
+                      Total Applications
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-4xl font-bold">
+                      {isLoading ? '...' : totalApps}
+                    </p>
+                  </CardContent>
+                </Card>
+              </ScrollAnimate>
 
-              <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-medium flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5" />
-                    Approved
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {isLoading ? '...' : approvedCount}
-                  </p>
-                </CardContent>
-              </Card>
+              <ScrollAnimate>
+                <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg font-medium flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      Approved
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-4xl font-bold">
+                      {isLoading ? '...' : approvedCount}
+                    </p>
+                  </CardContent>
+                </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
                <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg font-medium flex items-center gap-2">
@@ -287,10 +295,11 @@ export default function DashboardPage() {
                   </p>
                 </CardContent>
               </Card>
-
+              </ScrollAnimate>
             </div>
 
             <div className="grid md:grid-cols-4 gap-4 mb-8">
+              <ScrollAnimate>
               <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -303,7 +312,9 @@ export default function DashboardPage() {
                   <p className="text-xs opacity-80 mt-1">+12% this month</p>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
               <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -316,7 +327,9 @@ export default function DashboardPage() {
                   <p className="text-xs opacity-80 mt-1">+8% this month</p>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
               <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -329,7 +342,9 @@ export default function DashboardPage() {
                   <p className="text-xs opacity-80 mt-1">Processing</p>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
               <Card className="bg-gradient-to-br from-accent to-amber-600 text-white border-0">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -342,9 +357,11 @@ export default function DashboardPage() {
                   <p className="text-xs opacity-80 mt-1">Customer rating</p>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <ScrollAnimate>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -380,7 +397,9 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -427,9 +446,11 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <ScrollAnimate>
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -442,6 +463,8 @@ export default function DashboardPage() {
                         {chartData?.ageData ? <AgeDistributionChart data={chartData.ageData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
                     </CardContent>
                 </Card>
+                </ScrollAnimate>
+                <ScrollAnimate>
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -456,9 +479,11 @@ export default function DashboardPage() {
                         {chartData?.incomeData ? <IncomeDistributionChart data={chartData.incomeData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
                     </CardContent>
                 </Card>
+                </ScrollAnimate>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <ScrollAnimate>
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -471,7 +496,9 @@ export default function DashboardPage() {
                         {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
                     </CardContent>
                 </Card>
+                </ScrollAnimate>
 
+                <ScrollAnimate>
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
@@ -530,9 +557,11 @@ export default function DashboardPage() {
                     </div>
                   </CardContent>
                 </Card>
+                </ScrollAnimate>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <ScrollAnimate>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -561,7 +590,9 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
+              </ScrollAnimate>
 
+              <ScrollAnimate>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Recent Applications</CardTitle>
@@ -607,8 +638,10 @@ export default function DashboardPage() {
                   ))}
                 </CardContent>
               </Card>
+              </ScrollAnimate>
             </div>
             
+            <ScrollAnimate>
             <Card>
                 <CardHeader>
                   <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
@@ -618,6 +651,7 @@ export default function DashboardPage() {
                   <DistributionPlot />
                 </CardContent>
               </Card>
+            </ScrollAnimate>
       </div>
     </div>
   );
