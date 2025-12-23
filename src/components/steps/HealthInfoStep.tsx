@@ -204,25 +204,24 @@ export default function HealthInfoStep({ data, updateData, onNext, onBack }: Hea
 
               const isSelected = (data?.preExistingConditions || []).includes(condition.name);
               return (
-                  <div 
-                      key={condition.name} 
-                      className={`flex items-center space-x-3 p-3 rounded-lg border border-gray-200 transition-colors 
-                                  hover:bg-gray-50
-                                  ${isSelected ? 'bg-primary/10 text-primary border-primary/20' : 'bg-white'}`}
+                <div 
+                  key={condition.name} 
+                  className={`flex items-center justify-between px-4 py-3 rounded-lg border shadow-sm transition-colors 
+                              ${isSelected ? 'bg-primary/10 text-primary border-primary/20' : 'bg-gray-50 text-gray-800 hover:bg-gray-100'}`}
+                >
+                  <Label 
+                    htmlFor={condition.name} 
+                    className="font-semibold capitalize cursor-pointer"
                   >
-                      <Checkbox
-                          id={condition.name}
-                          checked={isSelected}
-                          onCheckedChange={() => toggleCondition(condition.name)}
-                          data-testid={`checkbox-${condition.name.replace(/\s/g, '-')}`}
-                      />
-                      <Label 
-                          htmlFor={condition.name} 
-                          className="font-medium capitalize text-gray-800 cursor-pointer"
-                      >
-                          {condition.name}
-                      </Label>
-                  </div>
+                    {condition.name}
+                  </Label>
+                  <Checkbox
+                    id={condition.name}
+                    checked={isSelected}
+                    onCheckedChange={() => toggleCondition(condition.name)}
+                    data-testid={`checkbox-${condition.name.replace(/\s/g, '-')}`}
+                  />
+                </div>
               );
             })}
           </div>

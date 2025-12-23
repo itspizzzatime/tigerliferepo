@@ -6,7 +6,6 @@ export interface Condition {
   }
   
   export const commonConditions: Condition[] = [
-    { name: "none" },
     { 
       name: "heart conditions",
       isParent: true,
