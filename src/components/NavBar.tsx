@@ -23,7 +23,7 @@ export default function NavBar() {
     router.push("/premium");
   };
 
-  const handleAdmin = () => {
+  const handleDashboard = () => {
     router.push("/dashboard");
   };
 
@@ -40,6 +40,14 @@ export default function NavBar() {
         
         {!isLoading && (
           <div className="flex items-center gap-2">
+             <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDashboard}
+              >
+                <LayoutDashboard className="h-4 w-4 mr-0 sm:mr-2" />
+                 <span className="hidden sm:inline">Dashboard</span>
+              </Button>
             {user ? (
               <>
                 <span className="text-sm text-gray-700 hidden sm:inline">
@@ -52,14 +60,6 @@ export default function NavBar() {
                 >
                   <User className="h-4 w-4 mr-0 sm:mr-2" />
                   <span className="hidden sm:inline">My Policy</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleAdmin}
-                >
-                  <LayoutDashboard className="h-4 w-4 mr-0 sm:mr-2" />
-                   <span className="hidden sm:inline">Admin</span>
                 </Button>
                 <Button
                   variant="outline"
