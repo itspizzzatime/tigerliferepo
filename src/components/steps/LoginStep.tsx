@@ -21,12 +21,14 @@ interface LoginStepProps {
 export default function LoginStep({ onNext, onBack, onClose, isSubmitting, applicationData }: LoginStepProps) {
   const { signup } = useAuth();
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!applicationData?.email || !password) {
+    if (!applicationData?.email || !password || password !== confirmPassword) {
       // Basic validation, you might want to add more robust validation
+      // Or show a toast message for password mismatch
       return;
     }
     setIsProcessing(true);
@@ -74,6 +76,21 @@ export default function LoginStep({ onNext, onBack, onClose, isSubmitting, appli
                     />
                 </div>
             </div>
+            <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input 
+                        id="confirmPassword" 
+                        type="password" 
+                        placeholder="Confirm your password" 
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        className="pl-10"
+                    />
+                </div>
+            </div>
         </CardContent>
       </Card>
 
@@ -82,7 +99,7 @@ export default function LoginStep({ onNext, onBack, onClose, isSubmitting, appli
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <Button type="submit" disabled={isSubmitting || isProcessing || !password} className="min-w-[140px]">
+        <Button type="submit" disabled={isSubmitting || isProcessing || !password || password !== confirmPassword} className="min-w-[140px]">
           {(isSubmitting || isProcessing) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit & Create Account
         </Button>

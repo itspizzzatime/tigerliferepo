@@ -16,7 +16,9 @@
       "motherName": "Maria",
       "motherOccupation": "Healthcare",
       "annualGrossIncome": "600k_1m",
-      "preExistingConditions": ["Other (Please specify)"],
+      "preExistingConditions": [
+        "Other (Please specify)"
+      ],
       "height": "170",
       "weight": "65",
       "smokingHabits": "none",
@@ -27,7 +29,6 @@
       "alcoholConsumption": "none",
       "hospitalizations": ""
     },
-
     "user_1766491725636_a8k2x9": {
       "id": "user_1766491725636_a8k2x9",
       "fullName": "Joshua Reyes",
@@ -55,7 +56,6 @@
       "alcoholConsumption": "occasional",
       "hospitalizations": ""
     },
-
     "user_1766491725637_m3q7v2": {
       "id": "user_1766491725637_m3q7v2",
       "fullName": "Angela Cruz",
@@ -72,7 +72,9 @@
       "motherName": "Rosa",
       "motherOccupation": "Vendor",
       "annualGrossIncome": "below_300k",
-      "preExistingConditions": ["Asthma"],
+      "preExistingConditions": [
+        "Asthma"
+      ],
       "height": "160",
       "weight": "55",
       "smokingHabits": "none",
@@ -83,7 +85,6 @@
       "alcoholConsumption": "none",
       "hospitalizations": ""
     },
-
     "user_1766491725638_r9z5w1": {
       "id": "user_1766491725638_r9z5w1",
       "fullName": "Mark Anthony Dela Peña",
@@ -111,7 +112,6 @@
       "alcoholConsumption": "occasional",
       "hospitalizations": ""
     },
-
     "user_1766491725639_t6n8c4": {
       "id": "user_1766491725639_t6n8c4",
       "fullName": "Joana Gomez",
@@ -139,7 +139,6 @@
       "alcoholConsumption": "none",
       "hospitalizations": ""
     },
-
     "user_1766491725640_k2e9p8": {
       "id": "user_1766491725640_k2e9p8",
       "fullName": "Clark Flores",
@@ -167,7 +166,6 @@
       "alcoholConsumption": "occasional",
       "hospitalizations": ""
     },
-
     "user_1766491725641_b4h7q0": {
       "id": "user_1766491725641_b4h7q0",
       "fullName": "Chua Lim",
@@ -195,7 +193,6 @@
       "alcoholConsumption": "none",
       "hospitalizations": ""
     },
-
     "user_1766491725642_j5y3d6": {
       "id": "user_1766491725642_j5y3d6",
       "fullName": "Mon Andrei Villanueva",
@@ -223,7 +220,6 @@
       "alcoholConsumption": "occasional",
       "hospitalizations": ""
     },
-
     "user_1766491725643_s8l1m4": {
       "id": "user_1766491725643_s8l1m4",
       "fullName": "Phio Godinez Santos",
@@ -245,6 +241,33 @@
       "weight": "50",
       "smokingHabits": "none",
       "lifestyle": "Moderate",
+      "substanceUse": "none",
+      "currentMedications": "",
+      "familyHistory": "",
+      "alcoholConsumption": "none",
+      "hospitalizations": ""
+    },
+    "user_1766502708380_rf1v3wa": {
+      "id": "user_1766502708380_rf1v3wa",
+      "fullName": "homer",
+      "email": "homer@gmail.com",
+      "phone": "33",
+      "dateOfBirth": "2004-02-22",
+      "college": "Faculty of Pharmacy",
+      "address": "123 Springfield",
+      "emergencyContact": "1223",
+      "emergencyName": "bart",
+      "program": "BS Pharmacy",
+      "fatherName": "j",
+      "fatherOccupation": "Software and IT",
+      "motherName": "ds",
+      "motherOccupation": "Software and IT",
+      "annualGrossIncome": "100k_300k",
+      "preExistingConditions": [],
+      "height": "170",
+      "weight": "65",
+      "smokingHabits": "none",
+      "lifestyle": "None",
       "substanceUse": "none",
       "currentMedications": "",
       "familyHistory": "",
