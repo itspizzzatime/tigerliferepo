@@ -29,9 +29,9 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 right-0 z-20 backdrop-blur-lg bg-white/80  border-gray-100 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 no-underline cursor-pointer group">
-           <span className="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight transition-colors group-hover:text-primary">
-            Tiger
-            <span className="text-primary group-hover:text-gray-800 transition-colors">Care</span>
+           <span className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <span className="text-ust-gold">Tiger</span>
+            <span className="text-tiger-brown">Care</span>
           </span>
         </Link>
         
