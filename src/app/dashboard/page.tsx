@@ -458,80 +458,90 @@ export default function DashboardPage() {
                 </Card>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
-              <Card className="md:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <PieChart className="w-5 h-5 text-primary" />
-                    Policy Distribution
-                  </CardTitle>
-                  <CardDescription>Breakdown by policy type</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-8">
-                    <div className="relative w-40 h-40">
-                      <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
-                        {policyDistribution.map((policy, index) => {
-                          const strokeLength = (policy.percentage / 100) * circumference;
-                          const offset = currentOffset;
-                          currentOffset += strokeLength;
-
-                          return (
-                            <circle
-                              key={index}
-                              cx="50"
-                              cy="50"
-                              r={radius}
-                              fill="none"
-                              strokeWidth="15"
-                              stroke={policy.stroke} 
-                              strokeDasharray={`${strokeLength} ${circumference}`}
-                              strokeDashoffset={-offset}
-                              strokeLinecap="round"
-                              className="transition-all duration-500 ease-out"
-                            />
-                          );
-                        })}
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-gray-900">{totalApps}</p>
-                          <p className="text-xs text-gray-500">Total</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-1 space-y-3">
-                      {policyDistribution.map((policy, index) => (
-                        <div key={index} className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className={`w-3 h-3 rounded-full ${policy.color.replace('text-', 'bg-')}`}></div>
-                            <span className="text-sm font-medium text-gray-700">{policy.type}</span>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-sm font-semibold text-gray-900">{policy.count}</span>
-                            <span className="text-xs text-gray-500 ml-1">({policy.percentage}%)</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="flex flex-col gap-6">
+                <Card>
                   <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                          <PieChart className="w-5 h-5 text-purple-600" />
-                          Pre-existing Conditions
-                      </CardTitle>
-                      <CardDescription>Distribution of applicant health conditions</CardDescription>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <PieChart className="w-5 h-5 text-primary" />
+                      Policy Distribution
+                    </CardTitle>
+                    <CardDescription>Breakdown by policy type</CardDescription>
                   </CardHeader>
                   <CardContent>
-                      {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    <div className="flex items-center gap-8">
+                      <div className="relative w-40 h-40">
+                        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 transform">
+                          {policyDistribution.map((policy, index) => {
+                            const strokeLength = (policy.percentage / 100) * circumference;
+                            const offset = currentOffset;
+                            currentOffset += strokeLength;
+
+                            return (
+                              <circle
+                                key={index}
+                                cx="50"
+                                cy="50"
+                                r={radius}
+                                fill="none"
+                                strokeWidth="15"
+                                stroke={policy.stroke} 
+                                strokeDasharray={`${strokeLength} ${circumference}`}
+                                strokeDashoffset={-offset}
+                                strokeLinecap="round"
+                                className="transition-all duration-500 ease-out"
+                              />
+                            );
+                          })}
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-gray-900">{totalApps}</p>
+                            <p className="text-xs text-gray-500">Total</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex-1 space-y-3">
+                        {policyDistribution.map((policy, index) => (
+                          <div key={index} className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-3 h-3 rounded-full ${policy.color.replace('text-', 'bg-')}`}></div>
+                              <span className="text-sm font-medium text-gray-700">{policy.type}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-sm font-semibold text-gray-900">{policy.count}</span>
+                              <span className="text-xs text-gray-500 ml-1">({policy.percentage}%)</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <PieChart className="w-5 h-5 text-purple-600" />
+                            Pre-existing Conditions
+                        </CardTitle>
+                        <CardDescription>Distribution of applicant health conditions</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    </CardContent>
+                </Card>
+              </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
+                  <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
+                </CardHeader>
+                <CardContent className="h-full flex items-center">
+                  <DistributionPlot />
+                </CardContent>
               </Card>
             </div>
-
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <Card>
@@ -606,18 +616,6 @@ export default function DashboardPage() {
                       </Badge>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mb-8">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
-                  <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DistributionPlot />
                 </CardContent>
               </Card>
             </div>
