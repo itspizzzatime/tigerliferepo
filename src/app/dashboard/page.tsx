@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { useState, useMemo, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-// import { getQueryFn } from "@/lib/queryClient";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,8 +81,18 @@ export default function DashboardPage() {
     data: ApplicationData;
   } | null>(null);
 
+  const fetchApplications = async () => {
+    // Simulate API call
+    return new Promise<any[]>(resolve => {
+      setTimeout(() => {
+        resolve(Object.values(info.profiles));
+      }, 500);
+    });
+  };
+
   const { data: applications, isLoading } = useQuery<any[]>({
-    queryKey: ["/api/my-applications"],
+    queryKey: ["my-applications"],
+    queryFn: fetchApplications,
     enabled: !!user,
   });
   
@@ -544,3 +553,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

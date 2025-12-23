@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +18,7 @@ import LoginStep from "./steps/LoginStep";
 import { checkEligibility } from "./steps/utils/eligibility";
 import { saveApplication } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface ApplicationModalProps {
   open: boolean;
@@ -197,6 +198,9 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent ref={contentRef} className="max-w-3xl max-h-[90vh] overflow-y-auto p-0" data-testid="dialog-application">
+         <VisuallyHidden>
+          <DialogTitle>Insurance Application</DialogTitle>
+        </VisuallyHidden>
         <div className="sticky top-0 bg-background z-10 p-6 border-b">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Insurance Application</h2>
@@ -224,3 +228,5 @@ export default function ApplicationModal({ open, onClose, onResultReady }: Appli
     </Dialog>
   );
 }
+
+    

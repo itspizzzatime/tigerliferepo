@@ -27,10 +27,11 @@ export default function PremiumPage() {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   
   const profiles = Object.values(info.profiles);
-  const lastProfile = profiles.length > 0 ? profiles[profiles.length - 1] : null;
-  const userProfile = user?.email && lastProfile?.email === user.email ? lastProfile : lastProfile;
+  const userProfile = user?.email 
+    ? profiles.find(p => p.email === user.email) 
+    : profiles.length > 0 ? profiles[profiles.length - 1] : null;
   
-  const displayName = userProfile?.fullName || "Guest";
+  const displayName = userProfile?.fullName || user?.email || "Guest";
 
   useEffect(() => {
     if (!userProfile) {
@@ -130,8 +131,8 @@ export default function PremiumPage() {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">Your Policy Overview</h1>
-              <p className="text-gray-500 mt-1">Review your coverage and premium details.</p>
+              <h1 className="text-4xl font-bold text-gray-900">Welcome, {displayName}!</h1>
+              <p className="text-gray-500 mt-1">Here is your policy overview.</p>
             </div>
           </div>
         </div>
@@ -322,3 +323,5 @@ export default function PremiumPage() {
     </div>
   );
 }
+
+    
