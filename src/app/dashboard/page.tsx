@@ -459,7 +459,19 @@ export default function DashboardPage() {
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="flex flex-col gap-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <PieChart className="w-5 h-5 text-purple-600" />
+                            Pre-existing Conditions
+                        </CardTitle>
+                        <CardDescription>Distribution of applicant health conditions</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    </CardContent>
+                </Card>
+
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
@@ -518,29 +530,6 @@ export default function DashboardPage() {
                     </div>
                   </CardContent>
                 </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg flex items-center gap-2">
-                            <PieChart className="w-5 h-5 text-purple-600" />
-                            Pre-existing Conditions
-                        </CardTitle>
-                        <CardDescription>Distribution of applicant health conditions</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
-                    </CardContent>
-                </Card>
-              </div>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
-                  <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
-                </CardHeader>
-                <CardContent className="h-full flex items-center">
-                  <DistributionPlot />
-                </CardContent>
-              </Card>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -619,6 +608,16 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
+            
+            <Card>
+                <CardHeader>
+                  <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
+                  <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
+                </CardHeader>
+                <CardContent className="h-full flex items-center">
+                  <DistributionPlot />
+                </CardContent>
+              </Card>
       </div>
     </div>
   );

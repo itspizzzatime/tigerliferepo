@@ -19,6 +19,22 @@ const COLORS = [
     '#E91E63'  // Cancer
 ];
 
+const renderLegend = (props: any) => {
+    const { payload } = props;
+    return (
+        <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+            {payload.map((entry: any, index: number) => (
+                <li key={`item-${index}`} style={{ color: entry.color, marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+                    <svg width="10" height="10" style={{ marginRight: '10px' }}>
+                        <rect width="10" height="10" fill={entry.color} />
+                    </svg>
+                    {entry.payload.name} - {entry.payload.value}
+                </li>
+            ))}
+        </ul>
+    );
+};
+
 export default function ConditionsPieChart({ data }: ConditionsPieChartProps) {
   return (
     <ResponsiveContainer width="100%" height={250}>
@@ -32,7 +48,7 @@ export default function ConditionsPieChart({ data }: ConditionsPieChartProps) {
           fill="#8884d8"
           dataKey="value"
           nameKey="name"
-          label={({ name, percent, value }) => `${(percent * 100).toFixed(0)}% (${value})`}
+          label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -44,6 +60,7 @@ export default function ConditionsPieChart({ data }: ConditionsPieChartProps) {
             layout="vertical"
             verticalAlign="middle"
             align="right"
+            content={renderLegend}
         />
       </PieChart>
     </ResponsiveContainer>
