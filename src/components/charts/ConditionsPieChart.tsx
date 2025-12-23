@@ -8,15 +8,16 @@ interface ConditionsPieChartProps {
 
 const COLORS = [
     '#8884d8', // None
-    '#82ca9d', // Heart
-    '#ffc658', // Respiratory
+    '#82ca9d', // Mental Health
+    '#ffc658', // Congenital
     '#ff8042', // Diabetes
-    '#0088FE', // Musculoskeletal
-    '#FF8042', // Cancer
-    '#00C49F', // Mental Health
-    '#FFBB28'  // Other
+    '#0088FE', // Respiratory
+    '#FF8042', // Kidney Disease
+    '#00C49F', // High Cholesterol
+    '#FFBB28', // Hypertension
+    '#F44336', // Cardiovascular
+    '#E91E63'  // Cancer
 ];
-
 
 export default function ConditionsPieChart({ data }: ConditionsPieChartProps) {
   return (
@@ -43,3 +44,5 @@ export default function ConditionsPieChart({ data }: ConditionsPieChartProps) {
     </ResponsiveContainer>
   );
 }
+
+    

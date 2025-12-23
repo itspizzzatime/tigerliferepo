@@ -50,8 +50,6 @@ const MEDIUM_DISEASES = [
     "Depression",
     "Bipolar",
     "Anxiety",
-    "Occasional",
-    "Heavy"
 ];
 
 // --- New Income Classification Function ---
@@ -124,64 +122,59 @@ function hasCondition(data: ApplicationData, conditionList: string[]): boolean {
 }
 
 export function checkEligibility(data: ApplicationData): EligibilityResult {
-    // --- Helper Calculations/Data Mapping ---
     const age = calculateAge(data.dateOfBirth);
-    
-    // --- IMPLEMENTATION OF INCOME CLASSIFICATION ---
-    // Convert the selected income option to a numeric value (take mean of range)
     const incomeValue = parseIncomeOption(data.annualGrossIncome) || 0;
     const familyIncomeClass = classifyIncome(incomeValue);
-    // ------------------------------------------------
     
-    // Calculate BMI from provided height (cm) and weight (kg) when available
+    // Check conditions
+    const hasHighRisk = hasCondition(data, HIGH_RISKS);
+    const hasMediumRisk = hasCondition(data, MEDIUM_DISEASES);
+    
+    // Check if they selected "Other" or a cancer not in our lists
+    const selectedConditions = (data.preExistingConditions || []).map(c => c.toLowerCase());
+    const hasAnyUnlistedCancer = selectedConditions.some(c => 
+        c.includes('cancer') && 
+        !HIGH_RISKS.map(r => r.toLowerCase()).includes(c) && 
+        !MEDIUM_DISEASES.map(r => r.toLowerCase()).includes(c)
+    );
+
+    // BMI Calculation
     let bmi = NaN;
     const heightCm = parseFloat((data as any).height || "");
     const weightKg = parseFloat((data as any).weight || "");
     if (!isNaN(heightCm) && heightCm > 0 && !isNaN(weightKg) && weightKg > 0) {
-        const heightM = heightCm / 100;
-        bmi = weightKg / (heightM * heightM);
+        bmi = weightKg / ((heightCm / 100) ** 2);
     }
-
-    // Replace narcotics flag with substance use field from the form
-    const hasSubstanceUse = (data.substanceUse || '').toLowerCase().includes('heavy');
-
-    // Mapping 'preExistingConditions' to specific criteria fields
-    const hasAnyHighRiskCondition = hasCondition(data, HIGH_RISKS);
-    const hasAnyMediumCondition = hasCondition(data, MEDIUM_DISEASES);
 
     const isTobaccoHeavy = (data.smokingHabits || '').toLowerCase().includes('heavy');
+    const hasSubstanceUse = (data.substanceUse || '').toLowerCase().includes('heavy');
 
-    // If heavy smoker with heart condition, decline immediately
-    if (isTobaccoHeavy && (data.preExistingConditions || []).map(c => String(c).toLowerCase()).includes('heart')) {
-        return "Decline";
-    }
-
-    // --- DECLINE (HIGH RISK) CRITERIA ---
+    // --- 1. DECLINE (High Risk) ---
     if (
         age < 16 || age > 25 ||
-        // Check for 'Poor' class using the new classification result
         familyIncomeClass === "Poor" || 
-        hasAnyHighRiskCondition || 
+        hasHighRisk || 
         hasSubstanceUse ||
-        // only apply BMI decline if we were able to compute it
-        (!isNaN(bmi) && (bmi >= 30 || bmi <= 15))
+        (!isNaN(bmi) && (bmi >= 30 || bmi <= 15)) ||
+        // Heavy smoker + Heart issues = Immediate Decline
+        (isTobaccoHeavy && selectedConditions.some(c => c.includes('heart')))
     ) {
         return "Decline";
     }
 
-    // --- CONDITIONAL (MODERATE RISK) CRITERIA ---
+    // --- 2. CONDITIONAL (Moderate Risk) ---
     if (
-        // Check for 'Low income' class using the new classification result
         familyIncomeClass === "Low income" || 
         ["Unemployed", "Construction", "Military"].includes(data.fatherOccupation) ||
         ["Unemployed", "Construction", "Military"].includes(data.motherOccupation) ||
-        hasAnyMediumCondition || 
+        hasMediumRisk || 
+        hasAnyUnlistedCancer || // Any cancer not "High Risk" defaults to Conditional
         data.alcoholConsumption === "heavy" ||
         isTobaccoHeavy
     ) {
         return "Conditional";
     }
 
-    // --- STANDARD (LOW RISK) CRITERIA ---
+    // --- 3. STANDARD (Low Risk) ---
     return "Standard";
 }
