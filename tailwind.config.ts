@@ -15,8 +15,8 @@ export default {
         code: ['monospace'],
       },
       colors: {
-        'ust-gold': '#FFA500',
-        'tiger-brown': '#9B4400',
+        'ust-gold': '#F9BA5C',
+        'tiger-brown': '#BC761F',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
