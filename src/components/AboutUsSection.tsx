@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 // 1. Import your actual image file from your folder (e.g., src/assets)
-import aboutUsImg from "@/lib/tigercare.jpg"; 
+import aboutUsImg from "@/lib/tigercare.png"; 
 
 export default function AboutUsSection() {
   return (
@@ -20,7 +20,7 @@ export default function AboutUsSection() {
           />
         </div>
         <div>
-          <h2 className="text-3xl font-bold mb-4">About Tiger Insurance</h2>
+          <h2 className="text-3xl font-bold mb-4">About TigerCare Insurance </h2>
           <p className="text-muted-foreground mb-4">
             TigerCare is dedicated to protecting families with approachable, affordable
             insurance plans that prioritize fast decisions and caring support. We combine
