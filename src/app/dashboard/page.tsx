@@ -258,6 +258,20 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
+               <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-medium flex items-center gap-2">
+                    <XCircle className="w-5 h-5" />
+                    Cancelled
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">
+                    3
+                  </p>
+                </CardContent>
+              </Card>
+
             </div>
 
             <div className="grid md:grid-cols-4 gap-4 mb-8">

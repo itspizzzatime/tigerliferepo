@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { LogOut, LogIn, LayoutDashboard, User, Home } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import paw from "@/lib/pawww.png";
+import { Logo } from "./icons";
 
 export default function NavBar() {
   const { user, logout, isLoading } = useAuth();
@@ -39,7 +39,7 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-background/80 border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 no-underline cursor-pointer group">
-          <img src="/favicon.ico" className="h-10 w-auto" alt="TigerCare Logo" />
+          <Logo className="h-10 w-auto" />
           <span className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             <span className="text-ust-gold">Tiger</span>
             <span className="text-tiger-brown">Care</span>
@@ -48,6 +48,18 @@ export default function NavBar() {
         
         {!isLoading && (
           <div className="flex items-center gap-2">
+            
+            {isPremiumPage && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleHome}
+              >
+                <Home className="h-4 w-4 mr-0 sm:mr-2" />
+                <span className="hidden sm:inline">Home</span>
+              </Button>
+            )}
+            
             {!isPremiumPage && (
               <>
                 {pathname === '/dashboard' ? (
@@ -101,13 +113,15 @@ export default function NavBar() {
                 </Button>
               </>
             ) : (
-              <Button 
-                size="sm" 
-                onClick={handleSignIn}
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                Login
-              </Button>
+              !isPremiumPage && (
+                <Button 
+                  size="sm" 
+                  onClick={handleSignIn}
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Login
+                </Button>
+              )
             )}
           </div>
         )}
@@ -115,5 +129,3 @@ export default function NavBar() {
     </header>
   );
 }
-
-    
