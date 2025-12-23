@@ -14,10 +14,12 @@ import ApplicationModal from "@/components/ApplicationModal";
 import ApplicationResultDialog from "@/components/ApplicationResultDialog";
 import NavBar from "@/components/NavBar";
 import type { ApplicationData } from "@/components/ApplicationModal";
-import { parseIncomeOption } from "@/components/steps/utils/eligibility";
+import { parseIncomeOption, checkEligibility, EligibilityResult } from "@/components/steps/utils/eligibility";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 import info from "../../data/info.json";  
-
+import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
+import IncomeDistributionChart from "@/components/charts/IncomeDistributionChart";
+import ConditionsPieChart from "@/components/charts/ConditionsPieChart";
 
 
 const DistributionPlot = dynamic(() => import('@/components/DistributionPlot'), { 
@@ -71,6 +73,18 @@ const claimsByCategory = [
   { category: "Vision", amount: 15000, percentage: 12 },
 ];
 
+function calculateAge(dateOfBirth: string): number {
+  if (!dateOfBirth) return 0;
+  const dob = new Date(dateOfBirth);
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const m = today.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+  }
+  return age;
+}
+
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
   const router = useRouter();
@@ -95,6 +109,99 @@ export default function DashboardPage() {
     queryFn: fetchApplications,
     enabled: !!user,
   });
+
+  const chartData = useMemo(() => {
+    if (!applications) return null;
+
+    const allProfiles = Object.values(info.profiles) as ApplicationData[];
+
+    // Age Distribution
+    const ageData: { name: string; Standard: number; Conditional: number }[] = [
+        { name: '16-18', Standard: 0, Conditional: 0 },
+        { name: '19-21', Standard: 0, Conditional: 0 },
+        { name: '22-25', Standard: 0, Conditional: 0 },
+    ];
+    
+    // Income Distribution
+    const incomeLevels = ["under_100k", "100k_300k", "300k_600k", "600k_1m", "over_1m"];
+    const incomeLabels: { [key: string]: string } = {
+        "under_100k": "< 100k",
+        "100k_300k": "100k-300k",
+        "300k_600k": "300k-600k",
+        "600k_1m": "600k-1M",
+        "over_1m": "> 1M"
+    };
+    const incomeData = incomeLevels.map(level => ({ name: incomeLabels[level], Standard: 0, Conditional: 0 }));
+    const incomeLevelMap = new Map(incomeLevels.map((level, i) => [level, i]));
+
+    // Conditions Distribution
+    const conditionsCount: Record<string, number> = {
+      'None': 0,
+      'Heart Conditions': 0,
+      'Respiratory Conditions': 0,
+      'Diabetes': 0,
+      'Musculoskeletal': 0,
+      'Cancer': 0,
+      'Mental Health': 0,
+      'Other': 0,
+    };
+    const mainConditions = [
+      'heart conditions',
+      'respiratory conditions',
+      'diabetes',
+      'musculoskeletal',
+      'cancer',
+      'mental health'
+    ];
+
+    allProfiles.forEach(profile => {
+        const eligibility = checkEligibility(profile);
+        if (eligibility === 'Decline') return;
+
+        // Age
+        const age = calculateAge(profile.dateOfBirth);
+        if (age >= 16 && age <= 18) {
+            ageData[0][eligibility]++;
+        } else if (age >= 19 && age <= 21) {
+            ageData[1][eligibility]++;
+        } else if (age >= 22 && age <= 25) {
+            ageData[2][eligibility]++;
+        }
+
+        // Income
+        const incomeIndex = incomeLevelMap.get(profile.annualGrossIncome);
+        if (incomeIndex !== undefined) {
+          incomeData[incomeIndex][eligibility]++;
+        }
+
+        // Conditions
+        if (!profile.preExistingConditions || profile.preExistingConditions.length === 0) {
+          conditionsCount['None']++;
+        } else {
+          let hasMainCondition = false;
+          profile.preExistingConditions.forEach(condition => {
+            const lowerCondition = condition.toLowerCase();
+            for (const main of mainConditions) {
+              if (lowerCondition.includes(main)) {
+                const key = main.charAt(0).toUpperCase() + main.slice(1);
+                conditionsCount[key]++;
+                hasMainCondition = true;
+                break; // count first match only
+              }
+            }
+          });
+          if (!hasMainCondition) {
+            conditionsCount['Other']++;
+          }
+        }
+    });
+
+    const conditionsPieData = Object.entries(conditionsCount)
+      .filter(([, count]) => count > 0)
+      .map(([name, value]) => ({ name, value }));
+
+    return { ageData, incomeData, conditionsPieData };
+  }, [applications]);
   
   const totalApps = totalApplications + 560;
 
@@ -253,7 +360,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {457}
+                    457
                   </p>
                 </CardContent>
               </Card>
@@ -326,6 +433,45 @@ export default function DashboardPage() {
                   <p className="text-xs opacity-80 mt-1">Customer rating</p>
                 </CardContent>
               </Card>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <Calendar className="w-5 h-5 text-primary" />
+                            Age Distribution by Policy
+                        </CardTitle>
+                        <CardDescription>Applicant ages for Standard vs. Conditional policies</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {chartData?.ageData ? <AgeDistributionChart data={chartData.ageData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <DollarSign className="w-5 h-5 text-green-600" />
+                            Income Distribution by Policy
+                        </CardTitle>
+                        <CardDescription>Family income levels for Standard vs. Conditional policies</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {chartData?.incomeData ? <IncomeDistributionChart data={chartData.incomeData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <PieChart className="w-5 h-5 text-purple-600" />
+                            Pre-existing Conditions
+                        </CardTitle>
+                        <CardDescription>Distribution of applicant health conditions</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                    </CardContent>
+                </Card>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -567,5 +713,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
