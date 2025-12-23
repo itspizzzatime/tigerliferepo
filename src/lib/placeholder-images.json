@@ -3,7 +3,7 @@
     {
       "id": "auth-image",
       "description": "University of Santo Tomas Main Building at dusk.",
-      "imageUrl": "/ust-.png",
+      "imageUrl": "/ust-bg.png",
       "imageHint": "university campus"
     },
     {
@@ -15,7 +15,7 @@
     {
       "id": "about-us-image",
       "description": "A modern office space with a team collaborating, representing a professional and dedicated company.",
-      "imageUrl": "/about.png",
+      "imageUrl": "/tigercare.png",
       "imageHint": "professional team"
     }
   ]

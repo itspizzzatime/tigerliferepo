@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Calculator } from "lucide-react";
 import { computePremiumFromCoeffs } from "@/lib/premium_coeffs";
 
 export default function PremiumCalculator() {
@@ -71,22 +71,22 @@ export default function PremiumCalculator() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
+    <section className="py-24 bg-background">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-tiger-brown mb-4">
             Calculate Your Premium
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Get a personalized estimate of your monthly insurance premium based on your health profile and lifestyle. Our calculator uses industry-standard factors to provide an accurate quote in seconds.
+            Get a personalized estimate of your monthly insurance premium. Our calculator provides an accurate quote in seconds.
           </p>
         </div>
 
-        <Card className="border-2 border-primary/20 shadow-lg">
+        <Card className="shadow-lg">
           <CardHeader>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                <span className="text-2xl font-bold text-primary">₱</span>
+                <Calculator className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <CardTitle>Your Premium Estimate</CardTitle>
@@ -182,7 +182,7 @@ export default function PremiumCalculator() {
             <Button
               onClick={handleCalculate}
               disabled={personalLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg font-semibold"
+              className="w-full bg-tiger-brown hover:bg-tiger-brown/90 text-white font-bold py-6 text-lg"
             >
               {personalLoading ? "Calculating..." : "Calculate My Premium"}
             </Button>
@@ -202,9 +202,9 @@ export default function PremiumCalculator() {
             )}
 
             {personalPremium !== null && (
-              <div className="mt-6 p-6 bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20 rounded-lg">
-                <p className="text-sm text-gray-600 mb-2">Your Estimated Monthly Premium</p>
-                <p className="text-4xl font-bold text-primary">
+              <div className="mt-6 p-6 bg-ust-gold/10 border-2 border-ust-gold/20 rounded-lg text-center">
+                <p className="text-sm text-tiger-brown mb-2">Your Estimated Monthly Premium</p>
+                <p className="text-4xl font-bold text-tiger-brown">
                   ₱{personalPremium.toLocaleString("en-PH", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,

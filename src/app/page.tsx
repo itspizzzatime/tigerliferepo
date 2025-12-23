@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
-      <main className="pt-16">
+      <main>
         <HeroSection onStartApplication={() => setModalOpen(true)} />
         <PremiumCalculator />
         <AboutUsSection />
@@ -26,7 +26,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-4">Tiger Care</h3>
+              <h3 className="font-bold text-lg mb-4 text-tiger-brown">TigerCare</h3>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Products</h4>
@@ -57,7 +57,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 Tiger Insurance. All rights reserved.</p>
+            <p>&copy; 2025 TigerCare Insurance. All rights reserved.</p>
           </div>
         </div>
       </footer>
