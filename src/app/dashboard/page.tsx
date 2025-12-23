@@ -429,7 +429,7 @@ export default function DashboardPage() {
               </Card>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -456,22 +456,10 @@ export default function DashboardPage() {
                         {chartData?.incomeData ? <IncomeDistributionChart data={chartData.incomeData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg flex items-center gap-2">
-                            <PieChart className="w-5 h-5 text-purple-600" />
-                            Pre-existing Conditions
-                        </CardTitle>
-                        <CardDescription>Distribution of applicant health conditions</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
-                    </CardContent>
-                </Card>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <Card>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+              <Card className="md:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <PieChart className="w-5 h-5 text-primary" />
@@ -528,9 +516,24 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </CardContent>
-                
               </Card>
 
+              <Card>
+                  <CardHeader>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                          <PieChart className="w-5 h-5 text-purple-600" />
+                          Pre-existing Conditions
+                      </CardTitle>
+                      <CardDescription>Distribution of applicant health conditions</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      {chartData?.conditionsPieData ? <ConditionsPieChart data={chartData.conditionsPieData} /> : <div className="h-[250px] w-full animate-pulse bg-gray-100 rounded-md" />}
+                  </CardContent>
+              </Card>
+            </div>
+
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -559,9 +562,7 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Recent Applications</CardTitle>
@@ -607,18 +608,18 @@ export default function DashboardPage() {
                   ))}
                 </CardContent>
               </Card>
+            </div>
 
-              <div className="mb-8">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
-                    <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <DistributionPlot />
-                  </CardContent>
-                </Card>
-              </div>
+            <div className="mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Frequency vs Fitted Claims Distribution</CardTitle>
+                  <CardDescription>Histogram of observed values overlaid with the Weibull fit</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <DistributionPlot />
+                </CardContent>
+              </Card>
             </div>
       </div>
     </div>
