@@ -1,22 +1,40 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { BRAND } from "@/components/dashboard/data/dashboardDemoData";
 
 interface IncomeDistributionChartProps {
-    data: { name: string; Standard: number; Conditional: number }[];
+  data: { name: string; Standard: number; Conditional: number }[];
 }
 
-export default function IncomeDistributionChart({ data }: IncomeDistributionChartProps) {
+export default function IncomeDistributionChart({
+  data,
+}: IncomeDistributionChartProps) {
+  const histogramData = data.map((bin) => ({
+    name: bin.name,
+    applicants: bin.Standard + bin.Conditional,
+  }));
+
   return (
-    <ResponsiveContainer width="100%" height={250}>
-      <BarChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+    <ResponsiveContainer width="100%" height={220}>
+      <BarChart
+        data={histogramData}
+        margin={{ top: 8, right: 20, left: -10, bottom: 5 }}
+        barCategoryGap={0}
+      >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="Standard" fill="#22c55e" />
-        <Bar dataKey="Conditional" fill="#3b82f6" />
+        <Tooltip formatter={(value: number) => [value, "Applicants"]} />
+        <Bar dataKey="applicants" name="Applicants" fill={BRAND.amber} />
       </BarChart>
     </ResponsiveContainer>
   );

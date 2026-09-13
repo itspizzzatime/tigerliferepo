@@ -50,9 +50,17 @@ export interface ApplicationData {
   substanceUse?: "none" | "occasional" | "heavy";
 
   currentMedications: string;
+  healthDocuments?: { name: string; type: string; size: number }[];
   familyHistory: string;
   alcoholConsumption: "none" | "occasional" | "heavy";
   hospitalizations: string;
+  hospitalizationHistory?: HospitalizationRecord[];
+}
+
+export interface HospitalizationRecord {
+  date: string;
+  reason: string;
+  documents: string;
 }
 
 const initialData: ApplicationData = {
@@ -77,9 +85,11 @@ const initialData: ApplicationData = {
   lifestyle: "",
   substanceUse: "none",
   currentMedications: "",
+  healthDocuments: [],
   familyHistory: "",
   alcoholConsumption: "none",
   hospitalizations: "",
+  hospitalizationHistory: [{ date: "", reason: "", documents: "" }],
 };
 
 export default function ApplicationModal({ open, onClose, onResultReady }: ApplicationModalProps) {

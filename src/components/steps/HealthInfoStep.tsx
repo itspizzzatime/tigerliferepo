@@ -239,6 +239,34 @@ export default function HealthInfoStep({ data, updateData, onNext, onBack }: Hea
           />
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="healthDocuments">
+            Pertinent Health Documents <span className="text-muted-foreground">(optional)</span>
+          </Label>
+          <Input
+            id="healthDocuments"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            multiple
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []).map((file) => ({
+                name: file.name,
+                type: file.type,
+                size: file.size,
+              }));
+              updateData({ healthDocuments: files });
+            }}
+          />
+          <p className="text-xs text-muted-foreground">
+            You may attach medical records, laboratory results, or other documents that help support your application. PDF, JPG, JPEG, and PNG files are accepted.
+          </p>
+          {(data.healthDocuments?.length ?? 0) > 0 && (
+            <p className="text-xs text-muted-foreground">
+              {data.healthDocuments?.length} document{data.healthDocuments?.length === 1 ? "" : "s"} selected.
+            </p>
+          )}
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="height">Height (cm) *</Label>
@@ -300,7 +328,7 @@ export default function HealthInfoStep({ data, updateData, onNext, onBack }: Hea
         </div>
 
         <div className="space-y-3">
-          <Label>Substance Use</Label>
+          <Label>Substance Use *</Label>
           <div className="max-w-sm">
             <Select value={data.substanceUse || 'none'} onValueChange={(v) => updateData({ substanceUse: v as any })}>
               <SelectTrigger>
